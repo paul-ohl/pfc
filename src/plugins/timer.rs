@@ -1,7 +1,3 @@
-#![allow(unused)]
-
-use std::time::Duration;
-
 use bevy::prelude::Timer as BevyTimer;
 use bevy::prelude::*;
 
@@ -15,29 +11,34 @@ impl Plugin for Timer {
 }
 
 #[derive(Debug, Component)]
-struct TimerComponent {
-    timer: BevyTimer,
-    step: u32,
+pub struct TimerComponent {
+    pub timer: BevyTimer,
+    pub step: u32,
 }
 
 fn setup_timer(mut commands: Commands) {
     commands.spawn((TimerComponent {
-        timer: BevyTimer::from_seconds(1.0, TimerMode::Repeating),
+        timer: BevyTimer::from_seconds(3.0, TimerMode::Once),
         step: 0,
     },));
 }
 
-fn update_timer(
-    mut commands: Commands,
-    mut timer_query: Query<(Entity, &mut TimerComponent)>,
-    time: Res<Time>,
-) {
+fn update_timer(mut timer_query: Query<(Entity, &mut TimerComponent)>, time: Res<Time>) {
     let mut timer = match timer_query.single_mut() {
         Ok(timer) => timer,
-        Err(_) => return,
+        Err(_) => {
+            println!("No timer found");
+            return;
+        }
     };
     if timer.1.timer.tick(time.delta()).just_finished() {
-        println!("Timer finished at step: {}", timer.1.step);
+        println!(
+            "Timer finished at step: {} ({}s)",
+            timer.1.step,
+            timer.1.timer.elapsed_secs()
+        );
+        timer.1.timer =
+            BevyTimer::from_seconds(timer.1.timer.elapsed_secs() * 0.80, TimerMode::Once);
         timer.1.step += 1;
     }
 }

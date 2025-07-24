@@ -17,7 +17,7 @@ pub struct MoveSprites {
 }
 
 #[derive(Component)]
-pub struct MoveAttack;
+pub struct MoveIcon;
 
 fn setup_moves(mut commands: Commands, asset_server: Res<AssetServer>) {
     let load_texture = |path: &str| {

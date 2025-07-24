@@ -1,6 +1,8 @@
+#![allow(unused)]
+
 use bevy::prelude::*;
 
-use pfc::plugins::{Moves, Players, Setup, Timer};
+use pfc::plugins::{Moves, Players, ProgressBarPlugin, Setup, Timer};
 
 fn main() {
     App::new()
@@ -9,5 +11,6 @@ fn main() {
         .add_plugins(Players)
         .add_plugins(Timer)
         .add_plugins(Moves)
+        .add_plugins(ProgressBarPlugin)
         .run();
 }

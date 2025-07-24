@@ -2,7 +2,7 @@
 
 use bevy::prelude::*;
 
-use crate::plugins::{MoveAttack, MoveSprites};
+use crate::plugins::{MoveIcon, MoveSprites};
 
 pub struct Players;
 
@@ -57,31 +57,36 @@ fn spawn_players(mut commands: Commands) {
 fn make_move(
     mut commands: Commands,
     mut player_query: Query<(Entity, &Player)>,
-    moves_resource: Res<MoveSprites>,
     keyboard_input: Res<ButtonInput<KeyCode>>,
+    moves_resource: Res<MoveSprites>,
+    existing_moves: Query<Entity, With<MoveIcon>>,
 ) {
     let left = Transform::from_translation(Vec3::new(-200.0, 40.0, 0.0));
     let right = Transform::from_translation(Vec3::new(200.0, 40.0, 0.0));
     for key in keyboard_input.get_just_pressed() {
         match key {
             KeyCode::KeyA => {
-                commands.spawn((moves_resource.rock.clone(), left, MoveAttack));
-                println!("Left player chose Rock");
+                commands.spawn((moves_resource.rock.clone(), left, MoveIcon));
             }
             KeyCode::KeyS => {
-                commands.spawn((moves_resource.paper.clone(), left, MoveAttack));
+                commands.spawn((moves_resource.paper.clone(), left, MoveIcon));
             }
             KeyCode::KeyD => {
-                commands.spawn((moves_resource.scissors.clone(), left, MoveAttack));
+                commands.spawn((moves_resource.scissors.clone(), left, MoveIcon));
             }
             KeyCode::KeyJ => {
-                commands.spawn((moves_resource.rock.clone(), right, MoveAttack));
+                commands.spawn((moves_resource.rock.clone(), right, MoveIcon));
             }
             KeyCode::KeyK => {
-                commands.spawn((moves_resource.paper.clone(), right, MoveAttack));
+                commands.spawn((moves_resource.paper.clone(), right, MoveIcon));
             }
             KeyCode::KeyL => {
-                commands.spawn((moves_resource.scissors.clone(), right, MoveAttack));
+                commands.spawn((moves_resource.scissors.clone(), right, MoveIcon));
+            }
+            KeyCode::KeyC => {
+                for entity in existing_moves.iter() {
+                    commands.entity(entity).despawn();
+                }
             }
             _ => {
                 println!("Pressed other key: {:?}", key);
