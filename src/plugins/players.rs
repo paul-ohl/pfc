@@ -2,6 +2,8 @@
 
 use bevy::prelude::*;
 
+use crate::plugins::{MoveAttack, MoveSprites};
+
 pub struct Players;
 
 pub enum PlayerType {
@@ -55,27 +57,31 @@ fn spawn_players(mut commands: Commands) {
 fn make_move(
     mut commands: Commands,
     mut player_query: Query<(Entity, &Player)>,
+    moves_resource: Res<MoveSprites>,
     keyboard_input: Res<ButtonInput<KeyCode>>,
 ) {
+    let left = Transform::from_translation(Vec3::new(-200.0, 40.0, 0.0));
+    let right = Transform::from_translation(Vec3::new(200.0, 40.0, 0.0));
     for key in keyboard_input.get_just_pressed() {
         match key {
             KeyCode::KeyA => {
-                println!("Pressed A");
+                commands.spawn((moves_resource.rock.clone(), left, MoveAttack));
+                println!("Left player chose Rock");
             }
             KeyCode::KeyS => {
-                println!("Pressed S");
+                commands.spawn((moves_resource.paper.clone(), left, MoveAttack));
             }
             KeyCode::KeyD => {
-                println!("Pressed D");
+                commands.spawn((moves_resource.scissors.clone(), left, MoveAttack));
             }
             KeyCode::KeyJ => {
-                println!("Pressed J");
+                commands.spawn((moves_resource.rock.clone(), right, MoveAttack));
             }
             KeyCode::KeyK => {
-                println!("Pressed K");
+                commands.spawn((moves_resource.paper.clone(), right, MoveAttack));
             }
             KeyCode::KeyL => {
-                println!("Pressed L");
+                commands.spawn((moves_resource.scissors.clone(), right, MoveAttack));
             }
             _ => {
                 println!("Pressed other key: {:?}", key);
