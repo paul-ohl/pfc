@@ -14,6 +14,7 @@ pub enum PlayerType {
 #[derive(Component)]
 struct Player {
     player_type: PlayerType,
+    health: u32,
 }
 
 impl Plugin for Players {
@@ -36,6 +37,7 @@ fn spawn_players(mut commands: Commands) {
         },
         Player {
             player_type: PlayerType::Left,
+            health: 10,
         },
     ));
     commands.spawn((
@@ -50,6 +52,7 @@ fn spawn_players(mut commands: Commands) {
         },
         Player {
             player_type: PlayerType::Right,
+            health: 10,
         },
     ));
 }

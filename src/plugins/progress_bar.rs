@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::plugins::TimerComponent;
+use crate::{get_single_component, get_single_mut_component, plugins::TimerComponent};
 
 pub struct ProgressBarPlugin;
 
@@ -40,27 +40,9 @@ fn update_bar(
     mut bar_query: Query<(Entity, &ProgressBar, &mut Transform, &mut Sprite)>,
     mut text_query: Query<(Entity, &ProgressBarText, &mut Text2d)>,
 ) {
-    let timer = match timer_query.single() {
-        Ok(timer) => timer,
-        Err(_) => {
-            println!("No timer found");
-            return;
-        }
-    };
-    let (_, _, mut transform, mut sprite) = match bar_query.single_mut() {
-        Ok(bar) => bar,
-        Err(_) => {
-            println!("No progress bar found");
-            return;
-        }
-    };
-    let (_, _, mut text) = match text_query.single_mut() {
-        Ok(text) => text,
-        Err(_) => {
-            println!("No progress bar text found");
-            return;
-        }
-    };
+    let timer = get_single_component!(timer_query);
+    let (_, _, mut transform, mut sprite) = get_single_mut_component!(bar_query);
+    let (_, _, mut text) = get_single_mut_component!(text_query);
 
     *text = Text2d::new(format!(
         "Time remaining: {:.2}s",

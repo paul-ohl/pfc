@@ -2,7 +2,7 @@
 
 use bevy::prelude::*;
 
-use pfc::plugins::{Moves, Players, ProgressBarPlugin, Setup, Timer};
+use pfc::plugins::{Moves, Players, ProgressBarPlugin, Setup, Timer, TurnPlugin};
 
 fn main() {
     App::new()
@@ -12,5 +12,6 @@ fn main() {
         .add_plugins(Timer)
         .add_plugins(Moves)
         .add_plugins(ProgressBarPlugin)
+        .add_plugins(TurnPlugin)
         .run();
 }

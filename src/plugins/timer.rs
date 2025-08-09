@@ -1,6 +1,8 @@
 use bevy::prelude::Timer as BevyTimer;
 use bevy::prelude::*;
 
+use crate::get_single_mut_component;
+
 pub struct Timer;
 
 impl Plugin for Timer {
@@ -24,13 +26,8 @@ fn setup_timer(mut commands: Commands) {
 }
 
 fn update_timer(mut timer_query: Query<(Entity, &mut TimerComponent)>, time: Res<Time>) {
-    let mut timer = match timer_query.single_mut() {
-        Ok(timer) => timer,
-        Err(_) => {
-            println!("No timer found");
-            return;
-        }
-    };
+    let mut timer = get_single_mut_component!(timer_query);
+
     if timer.1.timer.tick(time.delta()).just_finished() {
         println!(
             "Timer finished at step: {} ({}s)",
