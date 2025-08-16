@@ -2,7 +2,7 @@
 
 use bevy::prelude::*;
 
-use crate::plugins::{MoveIcon, MoveSprites};
+use crate::plugins::{CurrentTurn, MoveIcon, MoveSprites};
 
 pub struct Players;
 
@@ -63,6 +63,7 @@ fn make_move(
     keyboard_input: Res<ButtonInput<KeyCode>>,
     moves_resource: Res<MoveSprites>,
     existing_moves: Query<Entity, With<MoveIcon>>,
+    current_turn_query: Query<(Entity, &mut CurrentTurn)>,
 ) {
     let left = Transform::from_translation(Vec3::new(-200.0, 40.0, 0.0));
     let right = Transform::from_translation(Vec3::new(200.0, 40.0, 0.0));

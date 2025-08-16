@@ -1,8 +1,8 @@
 use bevy::{asset::RenderAssetUsages, image::ImageLoaderSettings, prelude::*};
 
-pub struct Moves;
+pub struct MovesPlugin;
 
-impl Plugin for Moves {
+impl Plugin for MovesPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(Startup, setup_moves)
             .add_systems(Update, update_moves);
