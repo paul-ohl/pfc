@@ -2,18 +2,9 @@ use bevy::prelude::*;
 
 use crate::{
     get_single_component, get_single_mut_component,
-    plugins::TimerComponent,
+    plugins::timer::TimerComponent,
     utils::types::{Moves, Outcome},
 };
-
-pub struct TurnPlugin;
-
-impl Plugin for TurnPlugin {
-    fn build(&self, app: &mut App) {
-        app.add_systems(Startup, setup_turn)
-            .add_systems(Update, update_turn);
-    }
-}
 
 #[derive(Component)]
 pub struct CurrentTurn {
@@ -31,7 +22,7 @@ pub struct TurnCounter(u32);
 #[derive(Component)]
 pub struct LastStep(u32);
 
-fn setup_turn(mut commands: Commands) {
+pub fn setup_turn(mut commands: Commands) {
     commands.spawn((
         TurnCounter(0),
         LastStep(0),
@@ -46,7 +37,7 @@ fn setup_turn(mut commands: Commands) {
     ));
 }
 
-fn update_turn(
+pub fn update_turn(
     timer_query: Query<(Entity, &mut TimerComponent)>,
     mut turn_counter_query: Query<(Entity, &mut TurnCounter)>,
     mut last_step_query: Query<(Entity, &mut LastStep)>,

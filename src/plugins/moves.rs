@@ -1,14 +1,5 @@
 use bevy::{asset::RenderAssetUsages, image::ImageLoaderSettings, prelude::*};
 
-pub struct MovesPlugin;
-
-impl Plugin for MovesPlugin {
-    fn build(&self, app: &mut App) {
-        app.add_systems(Startup, setup_moves)
-            .add_systems(Update, update_moves);
-    }
-}
-
 #[derive(Resource)]
 pub struct MoveSprites {
     pub rock: Sprite,
@@ -19,7 +10,7 @@ pub struct MoveSprites {
 #[derive(Component)]
 pub struct MoveIcon;
 
-fn setup_moves(mut commands: Commands, asset_server: Res<AssetServer>) {
+pub fn setup_moves(mut commands: Commands, asset_server: Res<AssetServer>) {
     let load_texture = |path: &str| {
         asset_server.load_with_settings(path, |settings: &mut ImageLoaderSettings| {
             settings.asset_usage = RenderAssetUsages::all()
@@ -36,4 +27,4 @@ fn setup_moves(mut commands: Commands, asset_server: Res<AssetServer>) {
     });
 }
 
-fn update_moves() {}
+pub fn update_moves() {}

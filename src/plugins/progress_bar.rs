@@ -1,15 +1,6 @@
 use bevy::prelude::*;
 
-use crate::{get_single_component, get_single_mut_component, plugins::TimerComponent};
-
-pub struct ProgressBarPlugin;
-
-impl Plugin for ProgressBarPlugin {
-    fn build(&self, app: &mut App) {
-        app.add_systems(Startup, setup_bar)
-            .add_systems(Update, update_bar);
-    }
-}
+use crate::{get_single_component, get_single_mut_component, plugins::timer::TimerComponent};
 
 #[derive(Component)]
 pub struct ProgressBar;
@@ -17,7 +8,7 @@ pub struct ProgressBar;
 #[derive(Component)]
 pub struct ProgressBarText;
 
-fn setup_bar(mut commands: Commands) {
+pub(super) fn setup_bar(mut commands: Commands) {
     commands.spawn((
         Sprite {
             color: Color::srgb(0.0, 1.0, 0.0),
@@ -35,7 +26,7 @@ fn setup_bar(mut commands: Commands) {
     ));
 }
 
-fn update_bar(
+pub(super) fn update_bar(
     timer_query: Query<(Entity, &mut TimerComponent)>,
     mut bar_query: Query<(Entity, &ProgressBar, &mut Transform, &mut Sprite)>,
     mut text_query: Query<(Entity, &ProgressBarText, &mut Text2d)>,

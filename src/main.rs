@@ -2,7 +2,9 @@
 
 use bevy::{prelude::*, window::WindowResolution};
 
-use pfc::plugins::{MovesPlugin, Players, ProgressBarPlugin, Setup, Timer, TurnPlugin};
+use pfc::plugins::{
+    CameraPlugin, MovesPlugin, PlayersPlugin, ProgressBarPlugin, TimerPlugin, TurnPlugin,
+};
 
 fn main() {
     App::new()
@@ -13,11 +15,11 @@ fn main() {
             }),
             ..default()
         }))
-        .add_plugins(Setup)
-        .add_plugins(Players)
-        .add_plugins(Timer)
+        .add_plugins(PlayersPlugin)
+        .add_plugins(TimerPlugin)
         .add_plugins(MovesPlugin)
         .add_plugins(ProgressBarPlugin)
         .add_plugins(TurnPlugin)
+        .add_plugins(CameraPlugin)
         .run();
 }

@@ -2,9 +2,10 @@
 
 use bevy::prelude::*;
 
-use crate::plugins::{CurrentTurn, MoveIcon, MoveSprites};
-
-pub struct Players;
+use crate::plugins::{
+    moves::{MoveIcon, MoveSprites},
+    turn::CurrentTurn,
+};
 
 pub enum PlayerType {
     Left,
@@ -12,19 +13,12 @@ pub enum PlayerType {
 }
 
 #[derive(Component)]
-struct Player {
+pub struct Player {
     player_type: PlayerType,
     health: u32,
 }
 
-impl Plugin for Players {
-    fn build(&self, app: &mut App) {
-        app.add_systems(Startup, spawn_players)
-            .add_systems(Update, make_move);
-    }
-}
-
-fn spawn_players(mut commands: Commands) {
+pub fn spawn_players(mut commands: Commands) {
     commands.spawn((
         Sprite {
             color: Color::srgb(0.0, 0.0, 1.0),
@@ -57,7 +51,7 @@ fn spawn_players(mut commands: Commands) {
     ));
 }
 
-fn make_move(
+pub fn update_players(
     mut commands: Commands,
     mut player_query: Query<(Entity, &Player)>,
     keyboard_input: Res<ButtonInput<KeyCode>>,
